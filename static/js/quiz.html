@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+	<style type="text/css">
+		.inputs {
+			display: inline;
+		}
+	</style>
+</head>
+<body>
+	<div>
+		<form>
+			<h3 class="question"></h3>
+			<input class="inputoptions" type="radio" name="radio" value="a"><p class="inputs"></p><br>
+			<input class="inputoptions" type="radio" name="radio" value="b"><p class="inputs"></p><br>
+			<input class="inputoptions" type="radio" name="radio" value="c"><p class="inputs"></p><br>
+			<input class="inputoptions" type="radio" name="radio" value="d"><p class="inputs"></p><br><br>
+			<input type="hidden" name="total" id="total" value="">
+			<button type="button" class="next">Next</button>
+		</form>
+	</div>
+	<script type="text/javascript">
+
+		const input =  document.querySelectorAll('input.inputoptions');
+		const inputs = document.querySelectorAll('p.inputs');
+		const next = document.querySelector('.next')
+		const question = document.querySelector('.question');
+		const total = document.getElementById('total')
+
+
+		const Questions = [
+		{
+			question:"Who is the author of the book 'ON FIRE' ",
+
+			options:{
+				a:"Sachin Tendulkar",
+				b:"Virat Kohli",
+				c:"Ben Stokes",
+				d:"Rohit Sharma"
+			},
+			correctAnswer:"c"
+		},
+		{
+			question:"Who is the writer of the book '2 STATES'",
+
+			options:{
+				a:"Chetan Bhagat",
+				b:"Amit singh",
+				c:"Gulzaar",
+				d:"Harsh Beniwal"
+			},
+			correctAnswer:"a"
+		},
+		{
+			question:"How many chapaters are their in 'THNIK and GROW RICH' by Napolean hill",
+
+			options:{
+				a:"9",
+				b:"13",
+				c:"10",
+				d:"15"
+			},
+			correctAnswer:"d"
+		}
+
+
+		]
+
+		var i = 0;
+		var score = 0;
+
+		function Ques(question, options, correct) {
+			this.question = question;
+			this.options = options;
+			this.a = this.options.a;
+			this.b = this.options.b;
+			this.c = this.options.c;
+			this.d = this.options.d;
+			this.correct = correct;
+		} 
+
+		
+		render(i);
+		function render(i){
+			var current = new Ques(Questions[i].question, Questions[i].options, Questions[i].correctAnswer);
+			question.innerHTML = 'Q' + '<sub>' + (i+1) + '</sub>' + " " + ':' + " " + current.question;
+			inputs[0].textContent = current.a
+			inputs[1].textContent = current.b
+			inputs[2].textContent = current.c
+			inputs[3].textContent = current.d
+		}
+		
+		var handler = function(){
+			
+			changeNext(i)
+			if(i<2){
+				addScore(i)
+				i+=1
+				render(i);
+				removeCheck(i);
+
+			}else{
+				addScore(i);
+				next.removeEventListener('click', handler);
+			}
+
+			changeName(i)
+			
+		}
+
+		next.addEventListener('click', handler)
+
+		function removeCheck(i){
+			input.forEach((current)=>{
+				current.checked = "";
+			})
+		}
+
+		function changeNext(i){
+			// console.log(i)
+			if(i==2){
+				next.type = "submit";
+				next.textContent = "Submit";
+				
+			}
+		}
+		function changeName(i){
+			if(i==2){
+				
+				next.textContent = "Submit";
+				total.value = score;
+			}
+		}
+
+		function addScore(i){
+			for(let j=0; j<input.length; j++){
+				if(input[j].checked){
+					if(input[j].value == Questions[i].correctAnswer){
+						score+=1;
+					}
+
+					
+					
+				}
+
+			}
+			console.log(score)
+		}
+
+
+		
+	</script>
+</body>
+</html>

@@ -1,0 +1,58 @@
+{% extends 'store/main.html' %}
+{% load static %}
+{% load custom_temp %}
+{% block content %}
+	<div class="main-container">
+		<h3>Search Results:</h3>
+		<hr>
+		
+		{% comment %} <h5>{{ genre }}</h5> {% endcomment %}
+		
+		<div class="grid-container">
+			
+			{% for dat in page_obj %}
+			
+			
+			<div class="storebg text-center">
+				<a href="{% url 'detail' dat.id %}" data-toggle="popover" title="{{dat.name}}" data-content="{{dat.content}}"><img class="thumbnail" src="{{dat.thumbnailURL}}"></a>
+				<div class="add-ftn">
+					<div class="price"><div class="price">&#8377 {{dat.price}}</div></div>	
+					{% if user.is_authenticated %}
+					<div class="heart" {% if bookedItems|exists:dat %} style="--background-color: {{ color1 }};" {% else %} style="--background-color:{{ color2 }};" {% endif %} data-product="{{dat.id}}" data-action="add"></div>
+					{% else %} 
+					<div class="heart" {% if bookedItems|present:dat.id %} style="--background-color: {{ color1 }};" {% else %} style="--background-color:{{ color2 }};" {% endif %} data-product="{{dat.id}}" data-action="add"></div>
+					{% endif %}
+				</div>
+			</div>
+			{% endfor %}				
+		</div>			
+		</div>		
+		<br>
+		{% if page_obj.paginator.num_pages > 1 %}
+        <div class="paginate">
+			{% if page_obj.has_previous %}
+			<div class="inside-page">
+			<a class="btn btn-outline-info mb-4" href="?page=1 {% if request.GET.query %}&query={{request.GET.query}}{% endif %}">First</a>
+			<a class="btn btn-outline-info mb-4" href="?page={{ page_obj.previous_page_number }}{% if request.GET.query %}&query={{request.GET.query}}{% endif %}">Previous</a>
+			{% endif %}
+
+			{% for num in page_obj.paginator.page_range %}
+				{% if page_obj.number == num %}
+					<a class="btn btn-info mb-4" href="?page={{ num }} {% if request.GET.query %}&query={{request.GET.query}}{% endif %}">{{ num }}</a>
+				{% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+					<a class="btn btn-outline-info mb-4" href="?page={{ num }} {% if request.GET.query %}&query={{request.GET.query}}{% endif %}">{{ num }}</a>
+				{% endif %}
+			{% endfor  %}
+
+			{% if page_obj.has_next %}
+			<a class="btn btn-outline-info mb-4" href="?page={{ page_obj.next_page_number }} {% if request.GET.query %}&query={{request.GET.query}}{% endif %}">Next</a>
+			<a class="btn btn-outline-info mb-4" href="?page={{ page_obj.paginator.num_pages }} {% if request.GET.query %}&query={{request.GET.query}}{% endif %}">Last</a>
+			{% endif %}
+		</div>
+		{% endif %}
+
+        
+	</div>
+			
+{% endblock content %}
+

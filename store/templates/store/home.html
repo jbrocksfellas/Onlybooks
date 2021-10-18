@@ -1,0 +1,17 @@
+{% extends 'store/main.html' %}
+{% load static %}
+{% block content %}
+
+<div class="main-home">
+    <div class="home-div">
+        {% comment %} <img src="{% static "images/wall.png" %}" alt="" class="sky"> {% endcomment %}
+        <div class="quote-box"><p class="quote">"When in doubt go to the library."</p>
+        <p class="quote-writer">- J.K. Rowling</p>
+        </div>
+        <div class="explore-div">
+            <a href="{% url 'store' %}"><button class="explore">Explore</button></a>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

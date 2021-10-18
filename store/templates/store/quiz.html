@@ -1,0 +1,19 @@
+{% extends 'store/main.html' %}
+{% load static %}
+{% load custom_temp %}
+{% block content %}
+<div class="main-containers">
+    <div class="quiz-container">
+	    <form method="get" action="/result">
+			<h4 class="question"></h4>
+			<input class="inputoptions" type="radio" name="radio" value="a"><p class="inputs"></p><br>
+			<input class="inputoptions" type="radio" name="radio" value="b"><p class="inputs"></p><br>
+			<input class="inputoptions" type="radio" name="radio" value="c"><p class="inputs"></p><br>
+			<input class="inputoptions" type="radio" name="radio" value="d"><p class="inputs"></p><br><br>
+			<input type="hidden" name="total" id="total" value="">
+			<button type="button" class="next btn btn-dark">Next</button>
+		</form>
+	</div>
+</div>
+
+{% endblock content %}

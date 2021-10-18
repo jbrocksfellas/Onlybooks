@@ -1,0 +1,64 @@
+{% extends 'store/main.html' %}
+{% load static %}
+{% block content %}
+	<div class="main-container">
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="box-element newCol">
+
+				<a class="back-btn" href="{% url 'store' %}"></a>
+				
+				{% comment %} <table class="table">
+					<tr>
+						<th><h5>Books: <strong>{{order.get_cart_items}}</strong></h5></th>
+						
+						<th>
+							<a  style="float:right; margin:5px;" class="btn btn-success" href="{% url 'checkout' %}">Checkout</a>
+						</th>
+					</tr>
+				</table> {% endcomment %}
+
+			</div>
+
+			<div class="box-element">
+				<div class="cart-row">
+					<div style="flex:1"><strong>Book</strong></div>
+					<div style="flex:1"><strong>Name</strong></div>
+					{% comment %} <div style="flex:2"><strong>Description</strong></div> {% endcomment %}
+					
+				</div>
+				{% comment %} {% for item in items %} {% endcomment %}
+				<div class="cart-row">
+					<div style="flex:1"><a href="{{product.imageURL}}"><img class="row-image" src="{{product.thumbnailURL}}"></a></div>
+					<div style="flex:1"><h4>{{product.name}}</h4><br><p>by {{ product.writer }}</p>
+					<div class="price">&#8377 {{ product.price }}</div><br>
+						<div class="del-bag">
+							{% if user.is_authenticated %}
+							<button data-product="{{product.id}}" data-action="add" class="btn btn-outline-success add-btn update-buy-cart">Add to Cart</button>
+							{% else %}
+							<a href="{% url 'login' %}"><button data-product="{{product.id}}" data-action="add" class="btn btn-outline-success add-btn update-buy-cart">Add to Cart</button></a>
+							{% endif %}
+								
+							
+							{% comment %} <button class="del-btn" data-product="{{product.id}}" data-action="remove"></button> {% endcomment %}
+						</div>
+					</div>
+					
+					{% comment %} <div style="flex:1"><p>${{item.product.price|floatformat:2}}</p></div> {% endcomment %}
+					{% comment %} <div style="flex:1">
+						<p class="quantity">{{item.quantity}}</p>
+						<div class="quantity">
+							<img data-product="{{item.product.id}}" data-action="add" class="chg-quantity update-cart" src="{% static  'images/arrow-up.png' %}">
+					
+							<img data-product="{{item.product.id}}" data-action="remove" class="chg-quantity update-cart" src="{% static  'images/arrow-down.png' %}">
+						</div>
+					</div> {% endcomment %}
+					{% comment %} <div style="flex:1"><p>${{item.get_total|floatformat:2}}</p></div> {% endcomment %}
+				</div>
+				<div><p>{{ product.content }}</p></div><br>
+				{% comment %} {% endfor %} {% endcomment %}
+			</div>
+		</div>
+	</div>
+	</div>
+{% endblock content %}

@@ -1,0 +1,54 @@
+{% extends 'store/main.html' %}
+{% load static %}
+{% block content %}
+<div class="main-containers">
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="box-element">
+
+				<a  class="btn btn-outline-dark" href="{% url 'store' %}">&#x2190; Continue Shopping</a>
+
+				<br>
+				<br>
+				<table class="table">
+					<tr>
+						<th><h5>Items:<strong class="totalItems">{{order.get_cart_items}}</strong></h5></th>
+						<th><h5>Total: <strong>&#8377 </strong><strong class = "totalPrice">{{order.get_cart_total|floatformat:2}}</strong></h5></th>
+						<th>
+							<a  style="float:right; margin:5px;" class="btn btn-success checkout-btn" href="{% url 'checkout' %}">Checkout</a>
+						</th>
+					</tr>
+				</table>
+
+			</div>
+
+			<br>
+			<div class="box-element">
+				<div class="cart-row">
+					{% comment %} <div style="flex:2"></div> {% endcomment %}
+					<div style="flex:2"><strong>Item</strong></div>
+					<div style="flex:1"><strong>Price</strong></div>
+					<div style="flex:1"><strong>Quantity</strong></div>
+					{% comment %} <div style="flex:1"><strong>Total</strong></div> {% endcomment %}
+				</div>
+				{% for item in items %}
+				<div class="cart-row">
+					<div style="flex:2"><a href="{% url 'detail' item.product.id %}" data-toggle="popover" title="{{dat.name}}" data-content="{{dat.content}}"><img class="row-image" src="{{item.product.thumbnailURL}}"></a></div>
+					{% comment %} <div style="flex:2"><p>{{item.product.name}}</p></div> {% endcomment %}
+					<div style="flex:1">&#8377 <div class="price">{{item.product.price|floatformat:2}}</div></div>
+					<div style="flex:1" style="">
+						<p class="quantity">{{item.quantity}}</p>
+						<div class="quantity">
+							<img data-product="{{item.product.id}}" data-action="add" class="chg-quantity update-buy-cart" src="{% static  'images/arrow-up.png' %}">
+					
+							<img data-product="{{item.product.id}}" data-action="remove" class="chg-quantity update-buy-cart" src="{% static  'images/arrow-down.png' %}">
+						</div>
+					</div>
+					{% comment %} <div style="flex:1"><p>&#8377 {{item.get_total|floatformat:2}}</p></div> {% endcomment %}
+				</div>
+				{% endfor %}
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock content %}

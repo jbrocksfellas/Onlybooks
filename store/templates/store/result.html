@@ -1,0 +1,12 @@
+{% extends 'store/main.html' %}
+{% load static %}
+{% load custom_temp %}
+{% block content %}
+<div class="main-containers">
+    <div>
+	    <h2>Result:</h2><br>
+        <h4>Score: {{request.GET.total}}/3</h4>
+	</div>
+</div>
+
+{% endblock content %}

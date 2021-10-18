@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+{% load static %}
+{% load custom_temp %}
+<html>
+<head>
+	<title>Ecom</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1" />
+	
+	<style>
+
+	</style>
+
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+	<link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+	<link rel="preconnect" href="https://fonts.gstatic.com">
+	<link href="https://fonts.googleapis.com/css2?family=Mate+SC&display=swap" rel="stylesheet">
+	<link rel="preconnect" href="https://fonts.gstatic.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com">
+	<link href="https://fonts.googleapis.com/css2?family=Arvo&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="{% static 'bootstrap/css/bootstrap.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'bootstrap/css/bootstrap-grid.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'bootstrap/css/bootstrap-grid.min.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'bootstrap/css/bootstrap-reboot.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'bootstrap/css/bootstrap-reboot.min.css' %}">
+
+	<script type="text/javascript">
+		var user = '{{request.user}}'
+		{% comment %} console.log(document.cookie) {% endcomment %}
+		function getToken(name) {
+		    var cookieValue = null;
+		    if (document.cookie && document.cookie !== '') {
+		        var cookies = document.cookie.split(';');
+		        for (var i = 0; i < cookies.length; i++) {
+		            var cookie = cookies[i].trim();
+		            // Does this cookie string begin with the name we want?
+		            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+		                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+		                break;
+		            }
+		        }
+		    }
+		    return cookieValue;
+		}
+		var csrftoken = getToken('csrftoken')
+		{% comment %} console.log(document.cookie) {% endcomment %}
+		function getCookie(name) {
+		    // Split cookie string and get all individual name=value pairs in an array
+		    var cookieArr = document.cookie.split(";");
+
+		    // Loop through the array elements
+		    for(var i = 0; i < cookieArr.length; i++) {
+		        var cookiePair = cookieArr[i].split("=");
+
+		        /* Removing whitespace at the beginning of the cookie name
+		        and compare it with the given string */
+		        if(name == cookiePair[0].trim()) {
+		            // Decode the cookie value and return
+		            return decodeURIComponent(cookiePair[1]);
+		        }
+		    }
+
+		    // Return null if not found
+		    return null;
+		}
+		var cart = JSON.parse(getCookie('cart'))
+
+		if (cart == undefined){
+			cart = {}
+			console.log('Cart Created!', cart)
+			document.cookie ='cart=' + JSON.stringify(cart) + ";domain=;path=/"
+		}
+		console.log('Cart:', cart)
+	
+	</script>
+
+</head>
+<body>
+	<div class="sticky">
+		<div class="navigation">
+			<div class="logo">
+				<a href="{% url 'home' %}"><h4>OnlyBooks</h4></a>
+			</div>
+			<ul class="nav-links">
+			{% with 'store genre search profile login logout' as list %}
+			{% for item in list.split %}
+			{% if item in request.path %}
+				{% comment %} <li>
+					<a href="{% url 'home' %}">Home</a>
+				</li> {% endcomment %}
+			{% endif %}
+			{% endfor %}
+			{% endwith %}
+
+			{% if request.path == '/' %}
+				<li>
+					<a href="{% url 'store' %}">Home</a>
+				</li>
+			{% elif request.path == '/bag' %}
+				
+			{% else %}
+			{% if user.is_authenticated %}
+				<li>
+					<a href="{% url 'cart' %}">Cart</a>
+				</li>
+			{% else %}
+			<li>
+					<a href="{% url 'login' %}">Cart</a>
+				</li>
+			{% endif %}
+			{% endif %}
+				{% if user.is_authenticated %}
+				<li>
+					<a href="{% url 'bag' %}">About Us</a>
+				</li>
+				<li>
+					<a href="{% url 'profile' %}">Profile</a>	
+				</li>
+				<li>
+					<a href="{% url 'logout' %}">Log Out</a>
+				</li>
+				{% else %}
+				<li>
+					<a href="{% url 'bag' %}">About Us</a>
+				</li>
+				<li>
+					<a href="{% url 'login' %}">Log In</a>
+				</li>
+				{% endif %}
+				
+			</ul>
+			<div class="burger">
+				<div class="line1"></div>
+				<div class="line2"></div>
+				<div class="line3"></div>
+			</div>
+		</div>
+		{% with 'store genre search' as list %}
+		{% for item in list.split %}
+		{% if item in request.path %}
+		<div class="below-nav">	
+			<div class="main-div">
+				<div class="panel-links">
+					{% with 'store' as list %}
+					{% for item in list.split %}
+					{% if item in request.path %}
+					<div><a href="{% url 'store' %}"><button class="but1">Home</button></a></div>
+					
+					{% else %}
+					<div><a href="{% url 'store' %}"><button class="but1">My Books</button></a></div>
+					{% endif %}
+					{% endfor %}
+					{% endwith %}
+					
+					<div><button class="but2">Genres</button></div>
+					<div><button class="but3">Community</button></div>	
+				</div>
+
+				<div class="dropdown-div1">
+					{% comment %} <div><a href="#">Recommendations</a></div>
+					<div><a href="#">Choice Awards</a></div>
+					<div><a href="{% url 'store' %}">Genres</a></div>
+					<div><a href="#">Giveways</a></div>
+					<div><a href="#">New Releases</a></div>
+					<div><a href="#">List</a></div>
+					<div><a href="#">Explore</a></div> {% endcomment %}
+					{% for genre in genres|slice:":6" %}
+					<div><a href="{% url 'genre-list' genre.name|lower %}">{{ genre|title }}</a></div>
+					{% endfor %}
+					<div><a href="#" style="color: blue;">more...</a></div>
+				</div>
+
+				<div class="dropdown-div2">
+					<div><a href="{% url 'quiz' %}">Quiz</a></div>
+					<div><a href="{% url 'bag' %}">My Bag</a></div>
+					<div><a href="#">Quotes</a></div>
+					<div><a href="#">Ask the Author</a></div>
+				</div>
+
+			</div>
+				<div class="srchgen">
+					<form method="get" action="/search">
+					<div class="srch-div">
+						<img src="{% static 'images/search.png' %}" alt="">
+						
+						<input type="search" class="srch" placeholder="search"  name="query" id="query" value="{{request.GET.query}}">
+						
+					</div>
+					{% comment %} <input type="submit"> {% endcomment %}
+					</form>
+					{% if request.path == '/store/'|addstr:product.id %}
+					<h3 class="genres">Details</h3>
+					{% else %}
+					<h3 class="genres">Genres</h3>
+					<hr>
+					{% endif %}
+				</div>
+			
+		</div>
+		{% endif %}
+		{% endfor %}
+		{% endwith %}
+	</div>
+
+		
+	
+     	
+	{% block content %}{% endblock content %}
+	
+		
+		
+	
+
+	<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+	<script type="text/javascript" src="{% static 'js/cart.js' %}"></script>
+
+	<script type="text/javascript" src="{% static 'bootstrap/js/bootstrap.bundle.js' %}"></script>
+	<script type="text/javascript" src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+	<script type="text/javascript" src="{% static 'bootstrap/js/bootstrap.js' %}"></script>
+	<script type="text/javascript" src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+</body>
+</html>
+

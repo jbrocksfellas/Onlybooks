@@ -1,0 +1,106 @@
+{% extends 'store/main.html' %}
+{% load static %}
+{% load custom_temp %}
+{% block content %}
+	<div class="main-container">
+		
+		
+		<h5>{{ genre }}</h5>
+		
+		<div class="grid-container">
+			
+			{% for dat in page_obj %}
+			
+			
+			<div class="storebg text-center">
+				<a href="{% url 'detail' dat.id %}" data-toggle="popover" title="{{dat.name}}" data-content="{{dat.content}}"><img class="thumbnail" src="{{dat.thumbnailURL}}"></a>
+				<div class="add-ftn">
+					<div class="price">&#8377 {{dat.price}}</div>	
+					{% if user.is_authenticated %}
+					<div class="heart" {% if items|exists:dat %} style="--background-color: {{ color1 }};" {% else %} style="--background-color:{{ color2 }};" {% endif %} data-product="{{dat.id}}" data-action="add"></div>
+					{% else %} 
+					<div class="heart" {% if items|present:dat.id %} style="--background-color: {{ color1 }};" {% else %} style="--background-color:{{ color2 }};" {% endif %} data-product="{{dat.id}}" data-action="add"></div>
+					{% endif %}
+				</div>
+			</div>
+			{% endfor %}
+				{% comment %} <div class="box-element product">
+					<h6><strong>{{product.name}}</strong></h6>
+					<hr>
+
+					<button data-product="{{product.id}}" data-action="add" class="btn btn-outline-secondary text-center add-btn update-cart">Add to Bag </button>
+					<!-- Example single danger button -->
+					<div class="btn-group">
+					<button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						Want to Read
+					</button>
+					<div class="dropdown-menu">
+						<a class="dropdown-item" href="#">Want to Read</a>
+						<a class="dropdown-item" href="#">Currently Reading</a>
+						<a class="dropdown-item" href="#">Read</a>
+						<div class="dropdown-divider"></div>
+						<a class="dropdown-item" href="#">Buy</a>
+					</div>
+					</div>
+
+					
+					
+					<a class="btn btn-outline-success" href="#">View</a>
+					<h4 style="display: inline-block; float: right"><strong>&#8377;{{product.price}}</strong></h4>
+				</div> {% endcomment %}
+
+				
+		</div>
+			
+			
+		
+			
+		</div>
+		{% comment %} <nav aria-label="Page navigation example">
+		<ul class="pagination justify-content-center">
+			<li class="page-item disabled">
+			<a class="page-link" href="?page={{ page_obj.previous_page_number }}" tabindex="-1" aria-disabled="true">Previous</a>
+			</li>
+			<li class="page-item"><a class="page-link" href="?page=1">1</a></li>
+			<li class="page-item"><a class="page-link" href="?page=2">2</a></li>
+			<li class="page-item"><a class="page-link" href="?page=3">3</a></li>
+			<li class="page-item">
+			<a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+			</li>
+		</ul>
+		</nav> {% endcomment %}
+		
+		<br>
+		{% if page_obj.paginator.num_pages > 1 %}
+        <div class="paginate">
+			{% if page_obj.has_previous %}
+			<div class="inside-page">
+			<a class="btn btn-outline-info mb-4" href="?page=1">First</a>
+			<a class="btn btn-outline-info mb-4" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+			{% endif %}
+
+			{% for num in page_obj.paginator.page_range %}
+				{% if page_obj.number == num %}
+					<a class="btn btn-info mb-4" href="?page={{ num }}">{{ num }}</a>
+				{% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+					<a class="btn btn-outline-info mb-4" href="?page={{ num }}">{{ num }}</a>
+				{% endif %}
+			{% endfor  %}
+
+			{% if page_obj.has_next %}
+			<a class="btn btn-outline-info mb-4" href="?page={{ page_obj.next_page_number }}">Next</a>
+			<a class="btn btn-outline-info mb-4" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+			{% endif %}
+		</div>
+		{% endif %}
+
+    
+        
+	</div>
+			
+		
+
+	
+
+{% endblock content %}
+
